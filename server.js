@@ -1,10 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
-
-const app = express();
+const bodyParser = require('body-parser');
+// api routes
 const users = require('./routes/api/users')
 const profile = require('./routes/api/profile')
 const posts = require('./routes/api/posts')
+
 
 // import mongo uri from config files
 const mongodb = require('./config/keys').mongoURI;
@@ -13,9 +14,13 @@ const mongodb = require('./config/keys').mongoURI;
 mongoose
     .connect(mongodb, { useNewUrlParser: true })
     .then( () => console.log("Mongodb Connnected successfully"))
-    .catch( err => console.log(err))
+    .catch( err => console.log(err));
 
-// api routes
+const app = express();
+
+//body parser middlewares
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 app.use('/api/users', users);
 app.use('/api/posts', posts);
