@@ -6,10 +6,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const key = require("../../config/keys");
 const passport = require("passport");
-const ValidateRegisteration = require('../../validation/register');
+const ValidateRegisteration = require("../../validation/register");
 const ValidateLogin = require("../../validation/login");
-
-
 
 // GET api/users/test
 // Test user route
@@ -20,12 +18,11 @@ router.get("/test", (req, res) => res.json({ msg: "user test route works" }));
 // register user
 // Public route
 router.post("/register", (req, res) => {
-//check for errors in registration
-  const {errors , isValid} = ValidateRegisteration(req.body);
-  if(!isValid) {
-    return res.status(400).json(errors)
+  //check for errors in registration
+  const { errors, isValid } = ValidateRegisteration(req.body);
+  if (!isValid) {
+    return res.status(400).json(errors);
   }
-
 
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
@@ -68,9 +65,9 @@ router.post("/register", (req, res) => {
 // Public route
 router.post("/login", (req, res) => {
   //check for errors in login
-  const {errors , isValid} = ValidateLogin(req.body);
-  if(!isValid) {
-    return res.status(400).json(errors)
+  const { errors, isValid } = ValidateLogin(req.body);
+  if (!isValid) {
+    return res.status(400).json(errors);
   }
 
   const email = req.body.email;
@@ -102,7 +99,7 @@ router.post("/login", (req, res) => {
           });
         });
       } else {
-        errors.password = "password is incorrect"
+        errors.password = "password is incorrect";
         return res.status(400).json(errors);
       }
     });
@@ -119,7 +116,7 @@ router.get(
     res.json({
       id: req.user.id,
       name: req.user.name,
-      email: req.user.email
+      email: req.user.email,
     });
   },
 );
